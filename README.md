@@ -1,4 +1,4 @@
-# Counterfactual-based Prescriptive Process Analytics
+# Balancing KPIs through Multi-Objective Precriptive Process Analytics
 
 This repository contains the implementation of the multi-KPI optimization framework for prescriptive process analytics, as described in our paper **Balancing KPIs through Multi-Objective Precriptive Process Analytics**.
 
