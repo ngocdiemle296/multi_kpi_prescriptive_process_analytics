@@ -40,7 +40,7 @@ def train_ml_model(train_data, test_data, case_id_name, outcome_name, columns_to
                    continuous_features, categorical_features, learning_rate, depth, 
                    n_iterations, case_study):
     """
-    Trains a CatBoostRegressor for predicting total execution time.
+    Trains a CatBoostRegressor for predicting combined outcome.
     """
 
     X_train, y_train = prepare_df_for_ml(train_data, case_id_name, outcome_name, columns_to_remove)
@@ -74,15 +74,11 @@ def train_ml_model(train_data, test_data, case_id_name, outcome_name, columns_to
     print("R2 score of training set:", r2_score(y_train, y_train_predicted))
     mae_train = mean_absolute_error(y_train, y_train_predicted) 
     print('Mean Absolute Error: {}'.format(mae_train))
-    # print('Mean Absolute Error: {} hours'.format(mae_train*SECONDS_TO_HOURS))
-    # print('Mean Absolute Error: {} days'.format(mae_train*SECONDS_TO_DAYS))
 
     print("Testing results:")
     y_test_predicted = catboost_pipeline.predict(X_test)
     print("R2 score of test set:", r2_score(y_test, y_test_predicted)) 
     mae = mean_absolute_error(y_test, y_test_predicted) 
     print('Mean Absolute Error: {}'.format(mae))
-    # print('Mean Absolute Error: {} hours'.format(mae*SECONDS_TO_HOURS))
-    # print('Mean Absolute Error: {} days'.format(mae*SECONDS_TO_DAYS))
 
     joblib.dump(catboost_pipeline, f'./case_studies/{case_study}/model/catboost_model.joblib') # Save models
