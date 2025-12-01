@@ -8,7 +8,7 @@ Experimental results demonstrate that our multi-KPI approach achieves favorable 
 
 
 ## Framework
-<img width="4536" height="2914" alt="framework_reduced_size" src="https://github.com/user-attachments/assets/86c1ea1f-231b-4058-81bf-0725fdfa9489" />
+<img width="4548" height="2903" alt="framework_reduced_size" src="https://github.com/user-attachments/assets/cc025e59-ad11-4ac0-ba92-7e3e453cd1a2" />
 
 
 ## Installation
