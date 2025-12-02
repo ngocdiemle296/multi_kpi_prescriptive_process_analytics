@@ -52,7 +52,6 @@ def run_experiment(
     method: str,
     num_cfes: int | None = None,
     window_size: int = 5,
-    seed: int = 1234,
     reduced_threshold: float = 0.05,
 ) -> Dict[Any, Any]:
     """
@@ -85,7 +84,7 @@ def run_experiment(
         Recommendations dictionary (structure depends on the called method).
     """
 
-    np.random.seed(seed)
+    np.random.seed(1234)
     method = method.lower()
     reduced_percentage = 1 - reduced_threshold
 
@@ -259,12 +258,7 @@ if __name__ == "__main__":
         default=5,
         help="Window size for the transition system (default: 5).",
     )
-    parser.add_argument(
-        "--seed",
-        type=int,
-        default=1234,
-        help="Random seed (default: 1234).",
-    )
+
     parser.add_argument(
         "--reduced_threshold",
         type=float,
@@ -279,6 +273,8 @@ if __name__ == "__main__":
         method=args.method,
         num_cfes=args.num_cfes,
         window_size=args.window_size,
-        seed=args.seed,
         reduced_threshold=args.reduced_threshold
     )
+
+# FOR RUNNING EXPERIMENT:
+# python run_experiment.py --case_study "BAC" --method "genetic" --num_cfes 5 --window_size 5 --reduced_threshold 0.05
