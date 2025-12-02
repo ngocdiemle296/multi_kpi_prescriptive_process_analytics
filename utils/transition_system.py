@@ -91,8 +91,7 @@ def transition_system(df, case_id_name=None, activity_column_name="ACTIVITY", th
         use_symbols (Bool): If all activities be mapped to symbols and those be used instead. `True` means yes do that.
                             When True it doesn't use the `activity_column_name` variable so its value doesn't matter.
         window_size (int): Max number of prefixes to keep in the transition system. E.g. For `window_size` = 3 if the
-                          prefix is <a, b, c, d>, the transition system will consider prefix <b, c, d> and add next
-                          possible activities to its list.
+                          prefix is <a, b, c, d>, the transition system will consider prefix <b, c, d> and add next possible activities to its list.
 
     Raises:
          AssertError: if unique activities are more than 26
@@ -168,7 +167,7 @@ def transition_system(df, case_id_name=None, activity_column_name="ACTIVITY", th
 
             previous_activity_str = activities_str
         
-    # Adding next activity frequency to the transition graph
+    # Adding next activity frequency to the transition graph (Only for extracting Most Probable Pair)
     new_ts = {}
     for key in transition_graph.keys():
         new_ts[key] = {} # Storing next activities and their frequencies
@@ -186,59 +185,3 @@ def transition_system(df, case_id_name=None, activity_column_name="ACTIVITY", th
                 new_ts[key][activity] = count
 
     return transition_graph, new_ts
-
-if __name__ == '__main__':
-    data_dir = "./data"
-
-    dataset = "completed.csv"               # bank_account_closure
-    dataset = "VINST cases incidents.csv"   # VINST dataset
-    data_file_path = os.path.join(data_dir, dataset)
-
-    activity_column_name = "ACTIVITY"
-    if dataset == "completed.csv":
-        case_id_name = "REQUEST_ID"
-        start_date_name = "START_DATE"
-        resource_column_name = "CE_UO"
-        df = pd.read_csv(data_file_path)  # concern: what is date col position is different?
-        df[start_date_name] = pd.to_datetime(df.iloc[:, 5], unit='ms')
-
-    elif dataset == "VINST cases incidents.csv":
-        case_id_name = 'SR_Number'  # The case identifier column name.
-        start_date_name = 'Change_Date+Time'  # Maybe change to start_et (start even time)
-        df = pd.read_csv(data_file_path)  # concern: what is date col position is different?
-        df[start_date_name] = pd.to_datetime(df.iloc[:, 1])
-
-    unique_activities = df[activity_column_name].unique()
-
-    # Create a dictionary that associates a unique symbol to each unique value
-    symbol_dict = {}
-    for index, value in enumerate(unique_activities):
-        symbol_dict[value] = chr(ord('A') + index)
-
-    # Map each value in the list to its corresponding unique symbol
-    symbol_list = [symbol_dict[value] for value in df[activity_column_name]]
-    df["activity_symbols"] = symbol_list
-
-    ################################
-    # Activity Transition System
-    ################################
-    df, transition_graph = transition_system(df, case_id_name, use_symbols=True)
-
-    ################################
-    # Block of code that creates pair of valid combinations of activity & resource, so that later new combinations
-    # can be validated.
-    ################################
-    # activity_resource_pair is a set of activity symbols and resource tuples.
-    # E.g. { (act1, res1), ..., (act6, res9) }
-
-
-    activity_resource_pair = set(zip(df["activity_symbols"], df[resource_column_name]))
-
-    # To test if a pair of activity and resource is valid
-    assert ('F', '00870') in activity_resource_pair
-    print("Test passed")
-    assert not ('F', '1100870') in activity_resource_pair
-    print("Test passed")
-
-    resource_column_names = [activity_column_name, 'Involved_ST_Function_Div', 'Involved_Org_line_3', 'Involved_ST', 'SR_Latest_Impact', 'Country', 'Owner_Country']
-    valid_resource_combo = set(df[resource_column_names].apply(tuple, axis='columns'))
