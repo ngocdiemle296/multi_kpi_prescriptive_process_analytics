@@ -24,7 +24,7 @@ pip install pandas numpy catboost dice_ml
 2. Train the Predictive model
 3. Generate Recommendations
 ```python
-python run_experiment.py --case_study "bac" --reduced_threshold 0.5 --num_cfes 5
+python run_experiment.py --case_study "BAC" --method "genetic" --num_cfes 5 --window_size 5 --reduced_threshold 0.05
 ```
 
 ## License
