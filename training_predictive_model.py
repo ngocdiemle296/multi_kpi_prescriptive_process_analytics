@@ -103,4 +103,4 @@ if __name__ == "__main__":
     main()
 
 # Running command:
-# python training_predictive_model.py --case_study "bpi12" --learning_rate 0.5 --depth 9 --n_iterations 2000
+# python training_predictive_model.py --case_study "BAC" --learning_rate 0.5 --depth 14 --n_iterations 4000
