@@ -9,6 +9,7 @@ import time
 from typing import Dict, Any
 
 # Local imports
+from utils.most_probable_pairs import add_most_probable_pairs
 from utils.pre_processing_functions import convert_dtypes_bpi12
 from utils.recommendation_functions import (
     exhaustive_recommendations,
@@ -115,6 +116,25 @@ def run_experiment(
         train_data = convert_dtypes_bpi12(train_data, "experiment")   
         test_data  = convert_dtypes_bpi12(test_data, "experiment")
         test_log  = convert_dtypes_bpi12(test_log, "experiment") 
+
+    # -------------------------
+    # Most probable (activity, resource) pair per case
+    # -------------------------
+    print("Computing most probable pairs for each case...")
+    test_data = add_most_probable_pairs(
+        train_data,
+        test_data,
+        test_log,
+        case_id_name=case_id_name,
+        activity_column_name=activity_column_name,
+        resource_column_name=resource_column_name,
+        window_size=window_size,
+    )
+    save_path = f"./case_studies/{case_study}"
+    os.makedirs(save_path, exist_ok=True)
+    most_prob_path = os.path.join(save_path, "test_log_with_last_act_most.csv")
+    test_data.to_csv(most_prob_path, index=False)
+    print(f"Saved most-probable-pair data to {most_prob_path}")
 
     # -------------------------
     # Features and models
