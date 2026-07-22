@@ -22,8 +22,8 @@ pip install pandas numpy catboost dice_ml
 
 ## Usage
 1. Preprocessing Event Logs
-2. Train the Total Time Oracle model
-3. Generate Counterfactual-based recommendations
+2. Training the Utility Function for multi-KPI
+3. Generating Recommendations
 ```python
 python run_experiment.py --case_study "bpi12" --method "genetic" --num_cfes 5 --window_size 5 --reduced_threshold 0.05
 ```
